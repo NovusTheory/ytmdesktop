@@ -2,14 +2,12 @@ const {
     MediaPlaybackStatus,
     MediaPlaybackType,
     SystemMediaTransportControlsButton,
-} = require('@nodert-win10/windows.media')
-const {
-    BackgroundMediaPlayer,
-} = require('@nodert-win10/windows.media.playback')
+} = require('@nodert-win10-rs4/windows.media')
+const { BackgroundMediaPlayer } = require('windows.media.playback')
 const {
     RandomAccessStreamReference,
-} = require('@nodert-win10/windows.storage.streams')
-const { Uri } = require('@nodert-win10/windows.foundation')
+} = require('@nodert-win10-rs4/windows.storage.streams')
+const { Uri } = require('@nodert-win10-rs4/windows.foundation')
 
 const mediaControl = require('../providers/mediaProvider')
 const settingsProvider = require('./settingsProvider')

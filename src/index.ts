@@ -1799,33 +1799,20 @@ app.on("ready", async () => {
 
   // Check for updates to YTMView scripts
   memoryStore.set("ytmViewLoadingStatus", "Checking for script updates...");
-  const latestReleaseResponse = await fetch("https://api.github.com/repos/NovusTheory/ytmdesktop-scripts/releases/latest", {
-    headers: {
-      "If-None-Match": store.get("metadata.ytmviewScriptsReleaseCache")
-    }
-  });
-  if (latestReleaseResponse.status !== 304) {
-    const latestReleaseJson = await latestReleaseResponse.json();
-
-    if (latestReleaseJson) {
-      if (store.get("metadata.ytmviewScriptsReleaseCache") !== latestReleaseResponse.headers.get("etag")) {
-        for (const asset of latestReleaseJson.assets) {
-          if (asset.name === "ytmview-scripts.asar") {
-            memoryStore.set("ytmViewLoadingStatus", "Downloading script updates...");
-            const asarFileResponse = await fetch(asset.browser_download_url);
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const asarFileBody = Readable.fromWeb(asarFileResponse.body);
-            process.noAsar = true;
-            const asarFileStream = fs.createWriteStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "w" });
-            await finished(asarFileBody.pipe(asarFileStream));
-            process.noAsar = false;
-            store.set("metadata.ytmviewScriptsReleaseCache", latestReleaseResponse.headers.get("etag"));
-            memoryStore.set("ytmViewLoadingStatus", "Downloaded script updates");
-          }
-        }
-      }
-    }
+  const latestReleaseHashResponse = await fetch("https://github.com/NovusTheory/ytmdesktop-scripts/releases/latest/download/ytmview-scripts.asar.sha256");
+  const latestReleaseHash = await latestReleaseHashResponse.text();
+  if (latestReleaseHash !== store.get("metadata.ytmviewScriptsReleaseCache")) {
+    memoryStore.set("ytmViewLoadingStatus", "Downloading script updates...");
+    const asarFileResponse = await fetch("https://github.com/NovusTheory/ytmdesktop-scripts/releases/latest/download/ytmview-scripts.asar");
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const asarFileBody = Readable.fromWeb(asarFileResponse.body);
+    process.noAsar = true;
+    const asarFileStream = fs.createWriteStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "w" });
+    await finished(asarFileBody.pipe(asarFileStream));
+    process.noAsar = false;
+    store.set("metadata.ytmviewScriptsReleaseCache", latestReleaseHash);
+    memoryStore.set("ytmViewLoadingStatus", "Downloaded script updates");
   }
 
   // Create the YouTube Music view

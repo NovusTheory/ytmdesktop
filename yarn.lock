@@ -2025,7 +2025,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ytmdesktop/ytmview-scripts@workspace:^, @ytmdesktop/ytmview-scripts@workspace:packages/ytmview-scripts":
+"@ytmdesktop/ytmview-scripts@workspace:*, @ytmdesktop/ytmview-scripts@workspace:packages/ytmview-scripts":
   version: 0.0.0-use.local
   resolution: "@ytmdesktop/ytmview-scripts@workspace:packages/ytmview-scripts"
   dependencies:
@@ -11087,7 +11087,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.2.1
     "@typescript-eslint/parser": ^6.2.1
     "@vercel/webpack-asset-relocator-loader": 1.7.3
-    "@ytmdesktop/ytmview-scripts": "workspace:^"
+    "@ytmdesktop/ytmview-scripts": "workspace:*"
     css-loader: ^6.0.0
     electron: 27.0.0
     electron-log: 5.0.0-beta.28

@@ -1799,11 +1799,15 @@ app.on("ready", async () => {
 
   // Check for updates to YTMView scripts
   memoryStore.set("ytmViewLoadingStatus", "Checking for script updates...");
-  const latestReleaseHashResponse = await fetch("https://github.com/NovusTheory/ytmdesktop-scripts/releases/latest/download/ytmview-scripts.asar.sha256");
+  const latestReleaseHashResponse = await fetch("https://github.com/NovusTheory/ytmdesktop-scripts/releases/latest/download/ytmview-scripts.asar.sha256", {
+    redirect: "follow"
+  });
   const latestReleaseHash = await latestReleaseHashResponse.text();
   if (latestReleaseHash !== store.get("metadata.ytmviewScriptsReleaseCache")) {
     memoryStore.set("ytmViewLoadingStatus", "Downloading script updates...");
-    const asarFileResponse = await fetch("https://github.com/NovusTheory/ytmdesktop-scripts/releases/latest/download/ytmview-scripts.asar");
+    const asarFileResponse = await fetch("https://github.com/NovusTheory/ytmdesktop-scripts/releases/latest/download/ytmview-scripts.asar", {
+      redirect: "follow"
+    });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const asarFileBody = Readable.fromWeb(asarFileResponse.body);

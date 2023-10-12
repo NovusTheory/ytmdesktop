@@ -1,7 +1,7 @@
 export type StoreSchema = {
   metadata: {
     version: 1;
-    ytmviewScriptsReleaseId: number;
+    ytmviewScriptsReleaseCache: string;
   };
   general: {
     disableHardwareAcceleration: boolean;

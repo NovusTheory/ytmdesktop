@@ -291,7 +291,7 @@ const store = new ElectronStore<StoreSchema>({
   defaults: {
     metadata: {
       version: 1,
-      ytmviewScriptsReleaseId: null
+      ytmviewScriptsReleaseCache: ""
     },
     general: {
       disableHardwareAcceleration: false,
@@ -1799,13 +1799,16 @@ app.on("ready", async () => {
 
   // Check for updates to YTMView scripts
   memoryStore.set("ytmViewLoadingStatus", "Checking for script updates...");
-  const releases = await fetch("https://api.github.com/repos/NovusTheory/ytmdesktop-scripts/releases?per_page=1");
-  const releasesJson = await releases.json();
+  const latestReleaseResponse = await fetch("https://api.github.com/repos/NovusTheory/ytmdesktop-scripts/releases/latest", {
+    headers: {
+      "If-None-Match": store.get("metadata.ytmviewScriptsReleaseCache")
+    }
+  });
+  const latestReleaseJson = await latestReleaseResponse.json();
 
-  if (releasesJson[0]) {
-    const release = releasesJson[0];
-    if (store.get("metadata.ytmviewScriptsReleaseId") !== release.id) {
-      for (const asset of release.assets) {
+  if (latestReleaseJson) {
+    if (store.get("metadata.ytmviewScriptsReleaseCache") !== latestReleaseResponse.headers.get("etag")) {
+      for (const asset of latestReleaseJson.assets) {
         if (asset.name === "ytmview-scripts.asar") {
           memoryStore.set("ytmViewLoadingStatus", "Downloading script updates...");
           const asarFileResponse = await fetch(asset.browser_download_url);
@@ -1816,7 +1819,7 @@ app.on("ready", async () => {
           const asarFileStream = fs.createWriteStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "w" });
           await finished(asarFileBody.pipe(asarFileStream));
           process.noAsar = false;
-          store.set("metadata.ytmviewScriptsReleaseId", release.id);
+          store.set("metadata.ytmviewScriptsReleaseCache", latestReleaseResponse.headers.get("etag"));
           memoryStore.set("ytmViewLoadingStatus", "Downloaded script updates");
         }
       }

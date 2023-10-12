@@ -1,0 +1,3 @@
+[submodule "packages/ytmview-scripts"]
+	path = packages/ytmview-scripts
+	url = https://github.com/NovusTheory/ytmdesktop-scripts.git

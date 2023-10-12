@@ -1,7 +1,8 @@
 export type StoreSchema = {
   metadata: {
-    version: 1
-  }
+    version: 1;
+    ytmviewScriptsReleaseId: number;
+  };
   general: {
     disableHardwareAcceleration: boolean;
     hideToTrayOnClose: boolean;
@@ -52,12 +53,12 @@ export type StoreSchema = {
     sessionKey: string | null;
   };
   developer: {
-    enableDevTools: boolean
-  }
+    enableDevTools: boolean;
+  };
 };
 
 export type MemoryStoreSchema = {
-  discordPresenceConnectionFailed: boolean
+  discordPresenceConnectionFailed: boolean;
   shortcutsPlayPauseRegisterFailed: boolean;
   shortcutsNextRegisterFailed: boolean;
   shortcutsPreviousRegisterFailed: boolean;

@@ -555,6 +555,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@electron/asar@npm:^3.2.7":
+  version: 3.2.7
+  resolution: "@electron/asar@npm:3.2.7"
+  dependencies:
+    commander: ^5.0.0
+    glob: ^7.1.6
+    minimatch: ^3.0.4
+  bin:
+    asar: bin/asar.js
+  checksum: bd47db31f93a4823e8da7fcff9ba610b293abf7af24e2844e1a3828844f0413bb39a4bf6353d0c7cf9ad23b4e5c147c07ca6f6eeb04e67e0579440c558f4370b
+  languageName: node
+  linkType: hard
+
 "@electron/get@npm:^2.0.0":
   version: 2.0.2
   resolution: "@electron/get@npm:2.0.2"
@@ -2011,6 +2024,16 @@ __metadata:
   checksum: 05b881b4866a3546861fee756e6d3812776ea47fa6eb7098f983d6d0eefa02e12b66c3fff931574120f196286a7ad4879ce02743c8bb2be36c6a576c7852083a
   languageName: node
   linkType: hard
+
+"@ytmdesktop/ytmview-scripts@workspace:^, @ytmdesktop/ytmview-scripts@workspace:packages/ytmview-scripts":
+  version: 0.0.0-use.local
+  resolution: "@ytmdesktop/ytmview-scripts@workspace:packages/ytmview-scripts"
+  dependencies:
+    "@electron/asar": ^3.2.7
+    terser: ^5.21.0
+    typescript: ~5.1.6
+  languageName: unknown
+  linkType: soft
 
 "abbrev@npm:1, abbrev@npm:^1.0.0":
   version: 1.1.1
@@ -9883,6 +9906,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"terser@npm:^5.21.0":
+  version: 5.21.0
+  resolution: "terser@npm:5.21.0"
+  dependencies:
+    "@jridgewell/source-map": ^0.3.3
+    acorn: ^8.8.2
+    commander: ^2.20.0
+    source-map-support: ~0.5.20
+  bin:
+    terser: bin/terser
+  checksum: 130f1567af1ffa4ddb067651bb284a01b45b5c83e82b3a072a5ff94b0b00ac35090f89c8714631a4a45972f65187bc149fc7144380611f437e1e3d9e174b136b
+  languageName: node
+  linkType: hard
+
 "text-table@npm:^0.2.0":
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
@@ -11050,6 +11087,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.2.1
     "@typescript-eslint/parser": ^6.2.1
     "@vercel/webpack-asset-relocator-loader": 1.7.3
+    "@ytmdesktop/ytmview-scripts": "workspace:^"
     css-loader: ^6.0.0
     electron: 27.0.0
     electron-log: 5.0.0-beta.28

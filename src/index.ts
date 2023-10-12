@@ -1804,23 +1804,25 @@ app.on("ready", async () => {
       "If-None-Match": store.get("metadata.ytmviewScriptsReleaseCache")
     }
   });
-  const latestReleaseJson = await latestReleaseResponse.json();
+  if (latestReleaseResponse.status !== 304) {
+    const latestReleaseJson = await latestReleaseResponse.json();
 
-  if (latestReleaseJson) {
-    if (store.get("metadata.ytmviewScriptsReleaseCache") !== latestReleaseResponse.headers.get("etag")) {
-      for (const asset of latestReleaseJson.assets) {
-        if (asset.name === "ytmview-scripts.asar") {
-          memoryStore.set("ytmViewLoadingStatus", "Downloading script updates...");
-          const asarFileResponse = await fetch(asset.browser_download_url);
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          const asarFileBody = Readable.fromWeb(asarFileResponse.body);
-          process.noAsar = true;
-          const asarFileStream = fs.createWriteStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "w" });
-          await finished(asarFileBody.pipe(asarFileStream));
-          process.noAsar = false;
-          store.set("metadata.ytmviewScriptsReleaseCache", latestReleaseResponse.headers.get("etag"));
-          memoryStore.set("ytmViewLoadingStatus", "Downloaded script updates");
+    if (latestReleaseJson) {
+      if (store.get("metadata.ytmviewScriptsReleaseCache") !== latestReleaseResponse.headers.get("etag")) {
+        for (const asset of latestReleaseJson.assets) {
+          if (asset.name === "ytmview-scripts.asar") {
+            memoryStore.set("ytmViewLoadingStatus", "Downloading script updates...");
+            const asarFileResponse = await fetch(asset.browser_download_url);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const asarFileBody = Readable.fromWeb(asarFileResponse.body);
+            process.noAsar = true;
+            const asarFileStream = fs.createWriteStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "w" });
+            await finished(asarFileBody.pipe(asarFileStream));
+            process.noAsar = false;
+            store.set("metadata.ytmviewScriptsReleaseCache", latestReleaseResponse.headers.get("etag"));
+            memoryStore.set("ytmViewLoadingStatus", "Downloaded script updates");
+          }
         }
       }
     }

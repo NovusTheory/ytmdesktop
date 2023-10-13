@@ -20,6 +20,7 @@ import ElectronStore from "electron-store";
 import log from "electron-log";
 import path from "path";
 import fs from "node:fs";
+import semver from "semver";
 
 import MemoryStore from "./memory-store";
 import playerStateStore, { PlayerState, VideoState } from "./player-state-store";
@@ -1799,15 +1800,22 @@ app.on("ready", async () => {
 
   // Check for updates to YTMView scripts
   memoryStore.set("ytmViewLoadingStatus", "Checking for script updates...");
-  const latestReleaseHashResponse = await fetch("https://github.com/NovusTheory/ytmdesktop-scripts/releases/latest/download/ytmview-scripts.asar.sha256", {
-    redirect: "follow"
-  });
+  const appSemVer = semver.parse(app.getVersion());
+  const latestReleaseHashResponse = await fetch(
+    `https://github.com/NovusTheory/ytmdesktop-scripts/releases/download/v${appSemVer.major}-${appSemVer.minor}-x/ytmview-scripts.asar.sha256`,
+    {
+      redirect: "follow"
+    }
+  );
   const latestReleaseHash = await latestReleaseHashResponse.text();
   if (latestReleaseHash !== store.get("metadata.ytmviewScriptsReleaseCache")) {
     memoryStore.set("ytmViewLoadingStatus", "Downloading script updates...");
-    const asarFileResponse = await fetch("https://github.com/NovusTheory/ytmdesktop-scripts/releases/latest/download/ytmview-scripts.asar", {
-      redirect: "follow"
-    });
+    const asarFileResponse = await fetch(
+      `https://github.com/NovusTheory/ytmdesktop-scripts/releases/download/v${appSemVer.major}-${appSemVer.minor}-x/ytmview-scripts.asar`,
+      {
+        redirect: "follow"
+      }
+    );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const asarFileBody = Readable.fromWeb(asarFileResponse.body);

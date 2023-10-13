@@ -11106,6 +11106,7 @@ __metadata:
     material-symbols: ^0.10.2
     node-loader: ^2.0.0
     prettier: ^3.0.0
+    semver: ^7.5.4
     socket.io: ^4.5.4
     style-loader: ^3.0.0
     ts-loader: ^9.2.2

@@ -1095,7 +1095,9 @@ const createYTMView = async () => {
   memoryStore.set("ytmViewLoadingStatus", "Verifying scripts integrity...");
   const asarFileStream = fs.createReadStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "r" });
   const scriptsAsarHash = createHash("sha256");
-  await finished(asarFileStream.pipe(scriptsAsarHash));
+  await new Promise(resolve => {
+    asarFileStream.pipe(scriptsAsarHash).on("finish", resolve);
+  });
   const scriptsAsarHashDigest = scriptsAsarHash.digest("hex");
   if (scriptsAsarHashDigest !== latestReleaseHash.trimEnd()) {
     memoryStore.set("ytmViewLoadingError", true);

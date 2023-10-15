@@ -1058,10 +1058,54 @@ function urlIsGoogleAccountsDomain(url: URL): boolean {
   return false;
 }
 
-const createYTMView = (): void => {
+const createYTMView = async () => {
   memoryStore.set("ytmViewLoadTimedout", false);
   memoryStore.set("ytmViewLoading", true);
   memoryStore.set("ytmViewLoadingStatus", "Initializing...");
+
+  // Check for updates to YTMView scripts
+  process.noAsar = true;
+  memoryStore.set("ytmViewLoadingStatus", "Checking for scripts updates...");
+  const appSemVer = semver.parse(app.getVersion());
+  const latestReleaseHashResponse = await fetch(
+    `https://github.com/NovusTheory/ytmdesktop-scripts/releases/download/v${appSemVer.major}-${appSemVer.minor}-x/ytmview-scripts.asar.sha256`,
+    {
+      redirect: "follow"
+    }
+  );
+  const latestReleaseHash = await latestReleaseHashResponse.text();
+  const scriptsAsarExist = fs.existsSync(path.join(app.getPath("userData"), "ytmview-scripts.asar"));
+  if (!scriptsAsarExist || latestReleaseHash !== store.get("metadata.ytmviewScriptsReleaseCache")) {
+    memoryStore.set("ytmViewLoadingStatus", "Downloading scripts updates...");
+    const asarFileResponse = await fetch(
+      `https://github.com/NovusTheory/ytmdesktop-scripts/releases/download/v${appSemVer.major}-${appSemVer.minor}-x/ytmview-scripts.asar`,
+      {
+        redirect: "follow"
+      }
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const asarFileBody = Readable.fromWeb(asarFileResponse.body);
+    const asarFileStream = fs.createWriteStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "w" });
+    await finished(asarFileBody.pipe(asarFileStream));
+    store.set("metadata.ytmviewScriptsReleaseCache", latestReleaseHash);
+  }
+
+  // Verify integrity of the scripts file
+  memoryStore.set("ytmViewLoadingStatus", "Verifying scripts integrity...");
+  const asarFileStream = fs.createReadStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "r" });
+  const scriptsAsarHash = createHash("sha256");
+  await new Promise(resolve => {
+    asarFileStream.pipe(scriptsAsarHash).on("finish", resolve);
+  });
+  const scriptsAsarHashDigest = scriptsAsarHash.digest("hex");
+  if (scriptsAsarHashDigest !== latestReleaseHash.trimEnd()) {
+    memoryStore.set("ytmViewLoadingError", true);
+    memoryStore.set("ytmViewLoadingStatus", "Script integrity failed, restart the app and try again");
+    return;
+  }
+  memoryStore.set("ytmViewLoadingStatus", "Verified scripts integrity");
+  process.noAsar = false;
 
   ytmView = new BrowserView({
     webPreferences: {
@@ -1130,11 +1174,11 @@ const createYTMView = (): void => {
       mainWindow.setFullScreen(false);
     }
   });
-  ytmView.webContents.on("render-process-gone", () => {
+  ytmView.webContents.on("render-process-gone", async () => {
     store.set("state.lastUrl", lastUrl);
     store.set("state.lastVideoId", lastVideoId);
     store.set("state.lastPlaylistId", lastPlaylistId);
-    createYTMView();
+    await createYTMView();
   });
   ytmView.webContents.on("page-title-updated", (_event, title) => {
     if (mainWindow) {
@@ -1567,7 +1611,7 @@ app.on("ready", async () => {
     }
   });
 
-  ipcMain.on("ytmView:recreate", event => {
+  ipcMain.on("ytmView:recreate", async event => {
     if (event.sender !== mainWindow.webContents) return;
 
     if (ytmView) {
@@ -1578,7 +1622,7 @@ app.on("ready", async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (ytmView.webContents as any).destroy();
       ytmView = null;
-      createYTMView();
+      await createYTMView();
     }
   });
 
@@ -1799,47 +1843,8 @@ app.on("ready", async () => {
   createMainWindow();
   log.info("Created main window");
 
-  // Check for updates to YTMView scripts
-  memoryStore.set("ytmViewLoadingStatus", "Checking for script updates...");
-  const appSemVer = semver.parse(app.getVersion());
-  const latestReleaseHashResponse = await fetch(
-    `https://github.com/NovusTheory/ytmdesktop-scripts/releases/download/v${appSemVer.major}-${appSemVer.minor}-x/ytmview-scripts.asar.sha256`,
-    {
-      redirect: "follow"
-    }
-  );
-  const latestReleaseHash = await latestReleaseHashResponse.text();
-  if (latestReleaseHash !== store.get("metadata.ytmviewScriptsReleaseCache")) {
-    memoryStore.set("ytmViewLoadingStatus", "Downloading script updates...");
-    const asarFileResponse = await fetch(
-      `https://github.com/NovusTheory/ytmdesktop-scripts/releases/download/v${appSemVer.major}-${appSemVer.minor}-x/ytmview-scripts.asar`,
-      {
-        redirect: "follow"
-      }
-    );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const asarFileBody = Readable.fromWeb(asarFileResponse.body);
-    process.noAsar = true;
-    const asarFileStream = fs.createWriteStream(path.join(app.getPath("userData"), "ytmview-scripts.asar"), { flags: "w" });
-    await finished(asarFileBody.pipe(asarFileStream));
-    process.noAsar = false;
-    store.set("metadata.ytmviewScriptsReleaseCache", latestReleaseHash);
-  }
-
-  // Verify integrity of the scripts file
-  memoryStore.set("ytmViewLoadingStatus", "Verifying scripts integrity...");
-  const asarFileBuffer = fs.readFileSync(path.join(app.getPath("userData"), "ytmview-scripts.asar"));
-  const hash = createHash("sha256").update(asarFileBuffer).digest("hex");
-  if (hash !== latestReleaseHash) {
-    memoryStore.set("ytmViewLoadingError", true);
-    memoryStore.set("ytmViewLoadingStatus", "Script integrity failed, restart the app and try again");
-    return;
-  }
-  memoryStore.set("ytmViewLoadingStatus", "Verified scripts integrity");
-
   // Create the YouTube Music view
-  createYTMView();
+  await createYTMView();
   log.info("Created YTM view");
 
   // Setup taskbar features
@@ -1848,7 +1853,9 @@ app.on("ready", async () => {
 
   if (store.get("appearance").zoom) {
     log.info("Integration update: Zoom Factor");
-    ytmView.webContents.setZoomFactor(store.get("appearance").zoom / 100);
+    if (ytmView) {
+      ytmView.webContents.setZoomFactor(store.get("appearance").zoom / 100);
+    }
   }
 
   // Integrations setup

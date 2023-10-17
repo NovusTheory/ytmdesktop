@@ -15,6 +15,9 @@ import { StoreSchema } from "../shared/store/schema";
 (async function () {
   const scripts = await ipcRenderer.invoke("ytmView:getScripts");
 
+  // During development the scripts are part of webpack and have an exports prepended to it. This will fix when we're executing the scripts to work fine
+  if (process.env.NODE_ENV === "development") await webFrame.executeJavaScript("exports = {}");
+
   const playerBarControlsScript = scripts["playerbarcontrols"];
   const hookPlayerApiEventsScript = scripts["hookplayerapievents"];
   const getPlaylistsScript = scripts["getplaylists"];

@@ -45,7 +45,7 @@ rules.push({
   type: "asset/resource"
 });
 rules.push({
-  test: /\.script\.(ts|js)$/,
+  test: /\.script\.js$/,
   type: "asset/source"
 });
 

@@ -2,6 +2,11 @@ import type { Configuration } from "webpack";
 
 import { rules } from "./webpack.rules";
 
+rules.push({
+  test: /(ytmview-scripts).*\.script\.ts$/,
+  type: "asset/source"
+});
+
 export const mainConfig: Configuration = {
   /**
    * This is the main entry point for your application, it's the first file

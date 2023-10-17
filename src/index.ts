@@ -1626,18 +1626,25 @@ app.on("ready", async () => {
     }
   });
 
-  ipcMain.handle("ytmView:getScripts", () => {
-    const asarPath =
-      process.env.NODE_ENV === "development"
-        ? path.join(process.cwd(), "packages/ytmview-scripts/out/ytmview-scripts.asar")
-        : path.join(app.getPath("userData"), "ytmview-scripts.asar");
-    const asarContents = fs.readdirSync(asarPath);
-
+  ipcMain.handle("ytmView:getScripts", async () => {
     const scripts: { [name: string]: string } = {};
-    for (const scriptFile of asarContents) {
-      const scriptContents = fs.readFileSync(path.join(asarPath, scriptFile));
-      const scriptName = path.basename(scriptFile, ".js");
-      scripts[scriptName] = scriptContents.toString();
+    if (process.env.NODE_ENV === "development") {
+      const scriptsDev: typeof scripts = await import("../packages/ytmview-scripts/src/developer");
+      for (const key of Object.keys(scriptsDev)) {
+        scripts[key] = scriptsDev[key];
+      }
+    } else {
+      const asarPath =
+        process.env.NODE_ENV === "development"
+          ? path.join(process.cwd(), "packages/ytmview-scripts/out/ytmview-scripts.asar")
+          : path.join(app.getPath("userData"), "ytmview-scripts.asar");
+      const asarContents = fs.readdirSync(asarPath);
+
+      for (const scriptFile of asarContents) {
+        const scriptContents = fs.readFileSync(path.join(asarPath, scriptFile));
+        const scriptName = path.basename(scriptFile, ".js");
+        scripts[scriptName] = scriptContents.toString();
+      }
     }
 
     return scripts;

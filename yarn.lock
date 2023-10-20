@@ -4105,28 +4105,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-plugin@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "fastify-plugin@npm:3.0.1"
-  checksum: 131ba0a388f777829c3fb0fd5b75cf057688ce6d0ca354fb1ebf829767a8c853b0825762b9185b5200097454df0ede2f3095da2efe1aa1b3736d07f194e6d374
-  languageName: node
-  linkType: hard
-
-"fastify-plugin@npm:^4.0.0":
+"fastify-plugin@npm:^4.0.0, fastify-plugin@npm:^4.5.1":
   version: 4.5.1
   resolution: "fastify-plugin@npm:4.5.1"
   checksum: ddd1b2d470c3acd9397c2617b5842dcf71a6f9a32f05d02be1c12e8d37b8fc03af656900cec38e2afef5e9a3dfe5f994317810f4c5e9960b127b1ca179b56f73
   languageName: node
   linkType: hard
 
-"fastify-socket.io@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "fastify-socket.io@npm:4.0.0"
+"fastify-socket.io@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "fastify-socket.io@npm:5.0.0"
   dependencies:
-    fastify-plugin: ^3.0.0
+    fastify-plugin: ^4.5.1
+    tslib: ^2.6.1
   peerDependencies:
-    socket.io: ^4.4.0
-  checksum: 7d80f16dddfca5e76ff473bb350063f5df184087620c1c1ae7321f1123a1a0ab229e1c0c845f714a78b382954281d98ee322b95f0f1f5e5d546fd3bba231a06d
+    fastify: 4.x.x
+  checksum: 41648781219990c9a88ee32cae942133e6434bd1d323a4d483d4c5aa0b850e38a8052662666bef51916c2e42d0669e67ba427ebcfce73da64c2ae35904352a78
   languageName: node
   linkType: hard
 
@@ -8771,6 +8765,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:^2.6.1":
+  version: 2.6.2
+  resolution: "tslib@npm:2.6.2"
+  checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
+  languageName: node
+  linkType: hard
+
 "type-check@npm:^0.4.0, type-check@npm:~0.4.0":
   version: 0.4.0
   resolution: "type-check@npm:0.4.0"
@@ -9653,7 +9654,7 @@ __metadata:
     eslint-plugin-import: ^2.25.0
     eslint-plugin-vue: ^9.15.1
     fastify: ^4.16.0
-    fastify-socket.io: ^4.0.0
+    fastify-socket.io: ^5.0.0
     fork-ts-checker-webpack-plugin: ^8.0.0
     git-revision-webpack-plugin: 5.0.0
     husky: ^8.0.0

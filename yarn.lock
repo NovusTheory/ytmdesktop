@@ -6084,10 +6084,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"material-symbols@npm:^0.10.2":
-  version: 0.10.4
-  resolution: "material-symbols@npm:0.10.4"
-  checksum: f5df04438fc021914fe236fb096028ba30405187787879f55920c2c1f4c2e07b8a1cc3995f31e7bac1c13b89eeb23b34faaa29d61f1f39947f06b2a5fe06cb21
+"material-symbols@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "material-symbols@npm:0.13.1"
+  checksum: db819fe299e4efc5cefe01c5e3d3b188ec456af305482ab0bb779372af4d5b17ff058b3f54b7b50c4afec9978e08b0dfb3af9071a172134ea8733b399947a3e0
   languageName: node
   linkType: hard
 
@@ -9658,7 +9658,7 @@ __metadata:
     git-revision-webpack-plugin: 5.0.0
     husky: ^8.0.0
     lint-staged: ^13.2.3
-    material-symbols: ^0.10.2
+    material-symbols: ^0.13.1
     node-loader: ^2.0.0
     prettier: ^3.0.0
     socket.io: ^4.5.4

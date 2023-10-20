@@ -51,7 +51,7 @@
     "node-loader": "^2.0.0",
     "prettier": "^3.0.0",
     "style-loader": "^3.0.0",
-    "ts-loader": "^9.2.2",
+    "ts-loader": "^9.5.0",
     "ts-node": "^10.0.0",
     "typescript": "~5.1.6",
     "vue-loader": "^17.0.1",

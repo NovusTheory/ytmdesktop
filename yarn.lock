@@ -871,10 +871,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinclair/typebox@npm:^0.30.2":
-  version: 0.30.4
-  resolution: "@sinclair/typebox@npm:0.30.4"
-  checksum: 7a970bd41a49e26e462c90ccfd6851b347e151f9a52c6570a7ff1d70e7d6e1d0d58da0f412c1670c9fb57929a6015c2aafaef92124ef2c012a904e6bdc146535
+"@sinclair/typebox@npm:^0.31.19":
+  version: 0.31.19
+  resolution: "@sinclair/typebox@npm:0.31.19"
+  checksum: 6f12fb0797fa8d058ec30604c97627c30fc8417d47c293443129d68de00f4f483c514c38e283ab556b93325b083b695cfcf1757871761d9c3e085cfb352789ef
   languageName: node
   linkType: hard
 
@@ -9637,7 +9637,7 @@ __metadata:
     "@fastify/error": ^3.3.0
     "@fastify/rate-limit": ^8.0.3
     "@fastify/type-provider-typebox": ^3.4.0
-    "@sinclair/typebox": ^0.30.2
+    "@sinclair/typebox": ^0.31.19
     "@types/node": ^18.17.1
     "@typescript-eslint/eslint-plugin": ^6.2.1
     "@typescript-eslint/parser": ^6.2.1

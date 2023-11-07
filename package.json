@@ -65,7 +65,7 @@
     "@fastify/error": "^3.4.0",
     "@fastify/rate-limit": "^8.0.3",
     "@fastify/type-provider-typebox": "^3.5.0",
-    "@sinclair/typebox": "^0.31.20",
+    "@sinclair/typebox": "^0.31.23",
     "electron-log": "5.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",

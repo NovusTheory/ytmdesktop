@@ -9157,9 +9157,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-loader@npm:^17.3.0":
-  version: 17.3.0
-  resolution: "vue-loader@npm:17.3.0"
+"vue-loader@npm:^17.4.2":
+  version: 17.4.2
+  resolution: "vue-loader@npm:17.4.2"
   dependencies:
     chalk: "npm:^4.1.0"
     hash-sum: "npm:^2.0.0"
@@ -9171,7 +9171,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 12a60830c421dac376af1281b383e6f2e0f3dae65d3eda553fc413bfaa3be2b1dd639753590ae2c6050410684726ef92a3510556fb1fa58768763e4290fee691
+  checksum: ffbe3e848e00c0e6afcc63a68eb5d279541ae5a3a41fee6a8400213b0327fa9e50153385a5e51bd39fdeda61a1bcec659ecae96061787e21a26261b746a7be48
   languageName: node
   linkType: hard
 
@@ -9814,7 +9814,7 @@ __metadata:
     ts-node: "npm:^10.9.1"
     typescript: "npm:~5.2.2"
     vue: "npm:^3.3.7"
-    vue-loader: "npm:^17.3.0"
+    vue-loader: "npm:^17.4.2"
     vue-template-compiler: "npm:^2.7.15"
     webpack: "npm:^5.89.0"
   languageName: unknown

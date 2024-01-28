@@ -29,7 +29,7 @@ export const mainConfig: Configuration = {
   plugins: [
     new DefinePlugin({
       YTMD_DISABLE_UPDATES: false,
-      YTMD_UPDATE_FEED_OWNER: "ytmdesktop",
+      YTMD_UPDATE_FEED_OWNER: "novustheory",
       YTMD_UPDATE_FEED_REPOSITORY: "ytmdesktop"
     })
   ],

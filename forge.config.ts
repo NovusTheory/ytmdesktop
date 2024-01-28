@@ -71,7 +71,7 @@ const config: ForgeConfig = {
       name: "@electron-forge/publisher-github",
       config: {
         repository: {
-          owner: "ytmdesktop",
+          owner: "novustheory",
           name: "ytmdesktop"
         }
       }

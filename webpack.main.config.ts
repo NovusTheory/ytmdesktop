@@ -4,6 +4,10 @@ import path from "path";
 
 import { rules } from "./webpack.rules";
 
+// This needs an eslint disable for now to clear the warning
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const relocateLoader = require("@vercel/webpack-asset-relocator-loader");
+
 rules.push({
   test: /\.tsx?$/,
   exclude: /(node_modules|\.webpack)/,
@@ -31,7 +35,16 @@ export const mainConfig: Configuration = {
       YTMD_DISABLE_UPDATES: false,
       YTMD_UPDATE_FEED_OWNER: "'ytmdesktop'",
       YTMD_UPDATE_FEED_REPOSITORY: "'ytmdesktop'"
-    })
+    }),
+    {
+      // Waiving this explicit any for now
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      apply(compiler: any) {
+        compiler.hooks.compilation.tap("webpack-asset-relocator-loader", (compilation: unknown) => {
+          relocateLoader.initAssetCache(compilation, "native_modules");
+        });
+      }
+    }
   ],
   resolve: {
     alias: {

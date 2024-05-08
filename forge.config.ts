@@ -71,8 +71,8 @@ const config: ForgeConfig = {
       name: "@electron-forge/publisher-github",
       config: {
         repository: {
-          owner: process.env.YTMD_UPDATE_FEED_OWNER ?? "ytmdesktop",
-          name: process.env.YTMD_UPDATE_FEED_REPOSITORY ?? "ytmdesktop"
+          owner: "novustheory",
+          name: "ytmdesktop"
         }
       }
     }

@@ -56,3 +56,6 @@ jobs:
         run: pnpm release:frommake
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YTMD_UPDATE_FEED_OWNER: ${{ vars.YTMD_UPDATE_FEED_OWNER }}
+          YTMD_UPDATE_FEED_REPOSITORY: ${{ vars.YTMD_UPDATE_FEED_REPOSITORY }}
+          NODE_ENV: production
